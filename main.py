@@ -10,6 +10,7 @@ def password_gen(length=8, chars= string.ascii_letters + string.digits + string.
         return ''.join(random.choice(chars) for _ in range(length))  
 
 class Email:
+    token = ""
     domain = ""
     address = ""
 
@@ -47,17 +48,30 @@ class Email:
         try:
             data = json.loads(response.text)
             self.address = data['address']
+            self.get_token(password)
             return self.address
 
             raise Exception("Failed to make an address")
         except:
             return False
 
+    def get_token(self, password):
+        url = "https://api.mail.tm/token"
+        payload = json.dumps({
+            "address": self.address,
+            "password": password
+        })
+        headers = {'Content-Type': 'application/json'}
+        response = requests.request("POST", url, headers=headers, data=payload)
+        self.token = json.loads(response.text)['token']
+        
+
 if __name__ == "__main__":
     # Get Domains
     test = Email()
-    print("Domain: " + test.domain)
+    print("\nDomain: " + test.domain)
 
     # Make new email address
     address = test.register()
-    print("Email Adress: " + str(address))
+    print("\nEmail Adress: " + str(address))
+    print("\nToken: " + str(test.token))
