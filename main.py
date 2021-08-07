@@ -68,6 +68,10 @@ class Email(Listen):
         
 
 if __name__ == "__main__":
+    def listener(message):
+        print("\nSubject: " + message['subject'])
+        print("Content: " + message['text'] if message['text'] else message['html'])
+
     # Get Domains
     test = Email()
     print("\nDomain: " + test.domain)
@@ -78,8 +82,8 @@ if __name__ == "__main__":
     print("\nToken: " + str(test.token))
 
     # Start listening
-    test.start()
-    print("\nWaiting for new emails...\n")
+    test.start(listener)
+    print("\nWaiting for new emails...")
 
     # Stop listening
     # test.stop()

@@ -35,14 +35,18 @@ class Listen:
             for message in self.message_list():
                 self.message_ids.append(message['id'])
                 message = self.message(message['id'])
-                listener(message)
+                self.listener(message)
 
             time.sleep(self.interval)
 
-    def start(self, interval=4):
+    def start(self, listener=None, interval=3):
+        if not listener:
+            raise Exception("Listener function is required")
+
         if self.listen:
             self.stop()
 
+        self.listener = listener
         self.interval = interval
         self.listen = True
 
