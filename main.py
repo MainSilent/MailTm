@@ -75,3 +75,10 @@ if __name__ == "__main__":
     address = test.register()
     print("\nEmail Adress: " + str(address))
     print("\nToken: " + str(test.token))
+
+    # Start listening
+    test.start()
+    print("\nWaiting for new emails\n")
+
+    # Stop listening
+    # test.stop()
