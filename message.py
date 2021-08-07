@@ -15,14 +15,17 @@ class Listen:
         try:
             data = json.loads(response.text)
             return  [
-                        msg for idx, msg in enumerate(data['hydra:member']) 
-                            if data['hydra:member'][idx]['id'] not in self.message_ids
+                        msg for i, msg in enumerate(data['hydra:member']) 
+                            if data['hydra:member'][i]['id'] not in self.message_ids
                     ]
         except Exception as e:
             return []
 
-    def message(self, id):
-        ...
+    def message(self, idx):
+        url = "https://api.mail.tm/messages/" + idx
+        headers = { 'Authorization': 'Bearer ' + self.token }
+        response = requests.request("GET", url, headers=headers)
+        return json.loads(response.text)
 
     def run(self):
         while True:
@@ -31,7 +34,8 @@ class Listen:
 
             for message in self.message_list():
                 self.message_ids.append(message['id'])
-                print(message)
+                message = self.message(message['id'])
+                listener(message)
 
             time.sleep(self.interval)
 
