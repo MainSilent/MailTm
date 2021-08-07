@@ -39,10 +39,7 @@ class Listen:
 
             time.sleep(self.interval)
 
-    def start(self, listener=None, interval=3):
-        if not listener:
-            raise Exception("Listener function is required")
-
+    def start(self, listener, interval=3):
         if self.listen:
             self.stop()
 

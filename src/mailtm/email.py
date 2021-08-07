@@ -84,7 +84,6 @@ if __name__ == "__main__":
     # Make new email address
     test.register()
     print("\nEmail Adress: " + str(test.address))
-    print("\nToken: " + str(test.token))
 
     # Start listening
     test.start(listener)
