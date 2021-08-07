@@ -11,9 +11,9 @@ def password_gen(length=8, chars= string.ascii_letters + string.digits + string.
         return ''.join(random.choice(chars) for _ in range(length))  
 
 class Email(Listen):
-    token = ""
-    domain = ""
-    address = ""
+    token: str
+    domain: str
+    address: str
 
     def __init__(self):
         if not self.domains():
