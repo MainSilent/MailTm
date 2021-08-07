@@ -2,7 +2,7 @@ import json
 import string
 import random
 import requests
-from message import Listen
+from .message import Listen
 
 def username_gen(length=24, chars= string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(length))  
