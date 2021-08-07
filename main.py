@@ -11,6 +11,7 @@ def password_gen(length=8, chars= string.ascii_letters + string.digits + string.
 
 class Email:
     domain = ""
+    address = ""
 
     def __init__(self):
         if not self.domains():
@@ -31,6 +32,32 @@ class Email:
         except:
             return False
 
+    def register(self, username=None, password=None):
+        username = username if username else username_gen()
+        password = password if password else password_gen()
+
+        url = "https://api.mail.tm/accounts"
+        payload = json.dumps({
+            "address": f"{username}@{self.domain}",
+            "password": password
+        })
+        headers = { 'Content-Type': 'application/json' }
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        try:
+            data = json.loads(response.text)
+            self.address = data['address']
+            return self.address
+
+            raise Exception("Failed to make an address")
+        except:
+            return False
+
 if __name__ == "__main__":
+    # Get Domains
     test = Email()
     print("Domain: " + test.domain)
+
+    # Make new email address
+    address = test.register()
+    print("Email Adress: " + str(address))
