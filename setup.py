@@ -10,6 +10,7 @@ setuptools.setup(
     description="Temporary Email",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    keywords=['mail', 'email', 'temporary mail', 'temporary email', 'mailtm'],
     url="https://github.com/MainSilent/MailTm",
     project_urls={
         "Bug Tracker": "https://github.com/MainSilent/MailTm/issues",
