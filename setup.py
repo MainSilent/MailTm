@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="Mail Tm",
+    name="MailTm",
     version="0.0.1",
     author="MainSilent",
     description="Temporary Email",
