@@ -40,8 +40,6 @@ print("\nWaiting for new emails...")
 
 # Documentation
 
-`domains()` | Get first available domain.
-
 `register(username=None, password=None, domain=None)` | Make an email account with random credentials, You can also pass a username, password and domain to use the same account.
 
 `start(listener, interval=3)` | Start listening for new emails, Interval means how many seconds takes to sync.
