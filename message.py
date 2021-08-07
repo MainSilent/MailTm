@@ -6,8 +6,10 @@ class Listen:
 
     def run(self):
         while True:
-            if not listen:
+            if not self.listen:
                 return
+
+            
 
             time.sleep(self.interval)
 
@@ -17,7 +19,9 @@ class Listen:
 
         self.interval = interval
         self.listen = True
-        self.run(interval)
+
+        # Start listening thread
+        Thread(target=self.run).start()
     
     def stop(self):
         self.listen = False

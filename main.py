@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     # Start listening
     test.start()
-    print("\nWaiting for new emails\n")
+    print("\nWaiting for new emails...\n")
 
     # Stop listening
     # test.stop()
