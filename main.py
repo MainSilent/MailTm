@@ -11,9 +11,9 @@ def password_gen(length=8, chars= string.ascii_letters + string.digits + string.
         return ''.join(random.choice(chars) for _ in range(length))  
 
 class Email(Listen):
-    token: str
-    domain: str
-    address: str
+    token = ""
+    domain = ""
+    address = ""
 
     def __init__(self):
         if not self.domains():
@@ -34,7 +34,8 @@ class Email(Listen):
         except:
             return False
 
-    def register(self, username=None, password=None):
+    def register(self, username=None, password=None, domain=None):
+        self.domain = domain if domain else self.domain
         username = username if username else username_gen()
         password = password if password else password_gen()
 
@@ -46,15 +47,16 @@ class Email(Listen):
         headers = { 'Content-Type': 'application/json' }
         response = requests.request("POST", url, headers=headers, data=payload)
 
+        data = json.loads(response.text)
         try:
-            data = json.loads(response.text)
             self.address = data['address']
-            self.get_token(password)
-            return self.address
-
-            raise Exception("Failed to make an address")
         except:
-            return False
+            self.address = f"{username}@{self.domain}"
+
+        self.get_token(password)
+
+        if not self.address:
+            raise Exception("Failed to make an address")
 
     def get_token(self, password):
         url = "https://api.mail.tm/token"
@@ -64,7 +66,10 @@ class Email(Listen):
         })
         headers = {'Content-Type': 'application/json'}
         response = requests.request("POST", url, headers=headers, data=payload)
-        self.token = json.loads(response.text)['token']
+        try:
+            self.token = json.loads(response.text)['token']
+        except:
+            raise Exception("Failed to get token")
         
 
 if __name__ == "__main__":
@@ -77,8 +82,8 @@ if __name__ == "__main__":
     print("\nDomain: " + test.domain)
 
     # Make new email address
-    address = test.register()
-    print("\nEmail Adress: " + str(address))
+    test.register()
+    print("\nEmail Adress: " + str(test.address))
     print("\nToken: " + str(test.token))
 
     # Start listening
