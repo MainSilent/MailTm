@@ -28,10 +28,7 @@ class Listen:
         return json.loads(response.text)
 
     def run(self):
-        while True:
-            if not self.listen:
-                return
-
+        while self.listen:
             for message in self.message_list():
                 self.message_ids.append(message['id'])
                 message = self.message(message['id'])
@@ -48,8 +45,9 @@ class Listen:
         self.listen = True
 
         # Start listening thread
-        Thread(target=self.run).start()
+        self.thread = Thread(target=self.run)
+        self.thread.start()
     
     def stop(self):
         self.listen = False
-        time.sleep(self.interval+1)
+        self.thread.join()
