@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="MailTm",
-    version="0.0.7",
+    version="0.0.8",
     author="MainSilent",
     description="Temporary Email",
     long_description=long_description,
