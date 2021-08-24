@@ -21,10 +21,11 @@ class Email(Listen):
 
     def domains(self):
         url = "https://api.mail.tm/domains"
-        response = requests.request("GET", url)
+        response = requests.get(url)
+        response.raise_for_status()
 
         try:
-            data = json.loads(response.text)
+            data = response.json()
             for domain in data['hydra:member']:
                 if domain['isActive']:
                     self.domain = domain['domain']
@@ -40,14 +41,15 @@ class Email(Listen):
         password = password if password else password_gen()
 
         url = "https://api.mail.tm/accounts"
-        payload = json.dumps({
+        payload = {
             "address": f"{username}@{self.domain}",
             "password": password
-        })
+        }
         headers = { 'Content-Type': 'application/json' }
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
 
-        data = json.loads(response.text)
+        data = response.json()
         try:
             self.address = data['address']
         except:
@@ -60,14 +62,15 @@ class Email(Listen):
 
     def get_token(self, password):
         url = "https://api.mail.tm/token"
-        payload = json.dumps({
+        payload = {
             "address": self.address,
             "password": password
-        })
+        }
         headers = {'Content-Type': 'application/json'}
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
         try:
-            self.token = json.loads(response.text)['token']
+            self.token = response.json()['token']
         except:
             raise Exception("Failed to get token")
         

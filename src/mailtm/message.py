@@ -10,9 +10,10 @@ class Listen:
     def message_list(self):
         url = "https://api.mail.tm/messages"
         headers = { 'Authorization': 'Bearer ' + self.token }
-        response = requests.request("GET", url, headers=headers)
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
         
-        data = json.loads(response.text)
+        data = response.json()
         return  [
                     msg for i, msg in enumerate(data['hydra:member']) 
                         if data['hydra:member'][i]['id'] not in self.message_ids
@@ -21,8 +22,9 @@ class Listen:
     def message(self, idx):
         url = "https://api.mail.tm/messages/" + idx
         headers = { 'Authorization': 'Bearer ' + self.token }
-        response = requests.request("GET", url, headers=headers)
-        return json.loads(response.text)
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
 
     def run(self):
         while self.listen:
