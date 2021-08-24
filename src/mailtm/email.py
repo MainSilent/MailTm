@@ -14,6 +14,7 @@ class Email(Listen):
     token = ""
     domain = ""
     address = ""
+    session = requests.Session()
 
     def __init__(self):
         if not self.domains():
@@ -21,7 +22,7 @@ class Email(Listen):
 
     def domains(self):
         url = "https://api.mail.tm/domains"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
 
         try:
@@ -46,7 +47,7 @@ class Email(Listen):
             "password": password
         }
         headers = { 'Content-Type': 'application/json' }
-        response = requests.post(url, headers=headers, json=payload)
+        response = self.session.post(url, headers=headers, json=payload)
         response.raise_for_status()
 
         data = response.json()
@@ -67,7 +68,7 @@ class Email(Listen):
             "password": password
         }
         headers = {'Content-Type': 'application/json'}
-        response = requests.post(url, headers=headers, json=payload)
+        response = self.session.post(url, headers=headers, json=payload)
         response.raise_for_status()
         try:
             self.token = response.json()['token']
