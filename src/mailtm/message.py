@@ -12,14 +12,11 @@ class Listen:
         headers = { 'Authorization': 'Bearer ' + self.token }
         response = requests.request("GET", url, headers=headers)
         
-        try:
-            data = json.loads(response.text)
-            return  [
-                        msg for i, msg in enumerate(data['hydra:member']) 
-                            if data['hydra:member'][i]['id'] not in self.message_ids
-                    ]
-        except Exception as e:
-            return []
+        data = json.loads(response.text)
+        return  [
+                    msg for i, msg in enumerate(data['hydra:member']) 
+                        if data['hydra:member'][i]['id'] not in self.message_ids
+                ]
 
     def message(self, idx):
         url = "https://api.mail.tm/messages/" + idx
