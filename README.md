@@ -29,13 +29,19 @@ from mailtm import Email
 def listener(message):
     print("\nSubject: " + message['subject'])
     print("Content: " + message['text'] if message['text'] else message['html'])
+    print("====")
+    print(test.source(message['id']))
 
 # Get Domains
 test = Email()
 print("\nDomain: " + test.domain)
 
-# Make new email address
+# Log in with existing credentials:
+#test.address="USERNAME@emergentvillage.org"
+#test.get_token(password="USER_PASSWORD")
+# Or make new email address:
 test.register()
+
 print("\nEmail Adress: " + str(test.address))
 
 # Start listening
