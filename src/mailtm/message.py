@@ -25,6 +25,13 @@ class Listen:
         response.raise_for_status()
         return response.json()
 
+    def source(self, idx):
+        url = "https://api.mail.tm/sources/" + idx
+        headers = { 'Authorization': 'Bearer ' + self.token }
+        response = self.session.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+
     def run(self):
         while self.listen:
             for message in self.message_list():
